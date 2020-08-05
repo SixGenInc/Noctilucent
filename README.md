@@ -7,7 +7,7 @@ This is the code developed and presented as part of the DEF CON 28 (Safe Mode) t
 
 Domain fronting, the technique of circumventing internet censorship and monitoring by obfuscating the domain of an HTTPS connection was killed by major cloud providers in April of 2018. However, with the arrival of TLS 1.3, new technologies enable a new kind of domain fronting. This time, network monitoring and internet censorship tools are able to be fooled on multiple levels. This talk will give an overview of what domain fronting is, how it used to work, how TLS 1.3 enables a new form of domain fronting, and what it looks like to network monitoring. You can circumvent censorship and monitoring today without modifying your tools using an open source TCP and UDP transport tool (Cloak) that will be released alongside this talk.
 
-Talk: [TBD]
+Talk: [Youtube](https://youtu.be/TDg092qe50g)
 
 Slides are available in the `docs` folder.
 
@@ -15,13 +15,13 @@ Compiled test client, test server, and Cloak client binaries are available under
 
 ## Demos
 
-Noctilucent test client bypassing Palo Alto 10.0 TLS decryption: [TBD]
+Noctilucent test client bypassing Palo Alto 10.0 TLS decryption: [Youtube](https://youtu.be/TDg092qe50g?t=1002)
 
-Noctilucent Cloak client: [TBD]
+Noctilucent Cloak client: [Youtube](https://youtu.be/TDg092qe50g?t=1192)
 
-Noctilucent Cloak client with CobaltStrike: [TBD]
+Noctilucent Cloak client with CobaltStrike: [Youtube](https://youtu.be/TDg092qe50g?t=1322)
 
-Noctilucent built into DeimosC2 Agent: [TBD]
+Noctilucent built into DeimosC2 Agent: [Youtube](https://youtu.be/TDg092qe50g?t=1417)
 
 ## Layout
 
@@ -38,8 +38,8 @@ Noctilucent
 ├── client # Test client source code
 │   └── build # Test client binaries
 ├── docs # Slides and other docs
+│   ├── example-traffic.pcapng # 2 requests made with the Noctilucent test client
 │   └── screenshots
-├── example-traffic.pcapng # 2 requests made with Noctilucent
 ├── findfronts # Helper to find domains that can be used with Noctilucent
 ├── server # Test server (HTTP and websockets)
 ├── tls # Noctilucent tls library (copied to _dev/GOROOT)
@@ -110,7 +110,7 @@ Cloudflare has a helpful site for finding frontable domains [here](https://www.c
 
 1. Setup a standard Cloak + Shadowsocks server using [this script](https://github.com/HirbodBehnam/Shadowsocks-Cloak-Installer/blob/master/Cloak2-Installer.sh).
 2. Download a [shadowsocks-rust binary](https://github.com/shadowsocks/shadowsocks-rust/releases) for your platform.
-3. Use the `noctilucent-cloak-clinet` and `sslocal` to create a local SOCKS proxy that is hidden behind a Cloudflare hosted domain. Example configs are available in `Cloak/example_config` and should be edited to match the values given by the Cloak + Shadowsocks setup script.
+3. Use the `noctilucent-cloak-client` and `sslocal` to create a local SOCKS proxy that is hidden behind a Cloudflare hosted domain. Example configs are available in `Cloak/example_config` and should be edited to match the values given by the Cloak + Shadowsocks setup script.
 
 
 ## Thanks
