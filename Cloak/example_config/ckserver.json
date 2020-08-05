@@ -1,0 +1,28 @@
+{
+  "ProxyBook": {
+    "shadowsocks": [
+      "tcp",
+      "127.0.0.1:8388"
+    ],
+    "openvpn": [
+      "udp",
+      "127.0.0.1:8389"
+    ],
+    "tor": [
+      "tcp",
+      "127.0.0.1:9001"
+    ]
+  },
+  "BindAddr": [
+    ":443",
+    ":80"
+  ],
+  "BypassUID": [
+    "base64-bypass-UID"
+  ],
+  "RedirAddr": "204.79.197.200",
+  "PrivateKey": "base64-private-key",
+  "AdminUID": "base64-admin-UID",
+  "DatabasePath": "userinfo.db",
+  "StreamTimeout": 300
+}

@@ -1,0 +1,287 @@
+diff --git a/LICENSE b/LICENSE
+index f288702..fd64940 100644
+--- a/LICENSE
++++ b/LICENSE
+@@ -1,3 +1,38 @@
++Copyright (c) 2020, SIXGEN Inc
++All rights reserved.
++
++Redistribution and use in source and binary forms, with or without
++modification, are permitted provided that the following conditions are met:
++   * Redistributions of source code must retain the above copyright
++notice, this list of conditions and the following disclaimer.
++   * Redistributions in binary form must reproduce the above
++copyright notice, this list of conditions and the following disclaimer
++in the documentation and/or other materials provided with the
++distribution.
++   * Neither the name of SIXGEN nor the names of its
++contributors may be used to endorse or promote products derived from
++this software without specific prior written permission.
++
++THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
++LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
++A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
++OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
++SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
++DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
++THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++
++========================================================================
++
++The code for client was derived from the
++Cloak project <https://github.com/cbeuw/Cloak>, available
++under the following GNU license:
++
++========================================================================
++
+                     GNU GENERAL PUBLIC LICENSE
+                        Version 3, 29 June 2007
+ 
+diff --git a/example_config/ckclient.json b/example_config/ckclient.json
+index 1df5b86..6d329b5 100644
+--- a/example_config/ckclient.json
++++ b/example_config/ckclient.json
+@@ -1,11 +1,14 @@
+ {
+-  "Transport": "direct",
++  "Transport": "CDN",
+   "ProxyMethod": "shadowsocks",
+   "EncryptionMethod": "plain",
+-  "UID": "5nneblJy6lniPJfr81LuYQ==",
+-  "PublicKey": "IYoUzkle/T/kriE+Ufdm7AHQtIeGnBWbhhlTbmDpUUI=",
+-  "ServerName": "www.bing.com",
++  "UID": "base64-UID-here",
++  "PublicKey": "base64-public-key-here",
++  "ServerName": "www.mozilla.com",
+   "NumConn": 4,
+-  "BrowserSig": "chrome",
+-  "StreamTimeout": 300
+-}
++  "StreamTimeout": 300,
++  "RemoteHost": "162.159.133.233",
++  "RemotePort": "443",
++  "ESNIServerName": "cloak-server-domain.tld",
++  "PreserveSNI": true
++}
+\ No newline at end of file
+diff --git a/example_config/ckserver.json b/example_config/ckserver.json
+index 5b8eb8c..b8b89d0 100644
+--- a/example_config/ckserver.json
++++ b/example_config/ckserver.json
+@@ -18,11 +18,11 @@
+     ":80"
+   ],
+   "BypassUID": [
+-    "1rmq6Ag1jZJCImLBIL5wzQ=="
++    "base64-bypass-UID"
+   ],
+   "RedirAddr": "204.79.197.200",
+-  "PrivateKey": "EN5aPEpNBO+vw+BtFQY2OnK9bQU7rvEj5qmnmgwEtUc=",
+-  "AdminUID": "5nneblJy6lniPJfr81LuYQ==",
++  "PrivateKey": "base64-private-key",
++  "AdminUID": "base64-admin-UID",
+   "DatabasePath": "userinfo.db",
+   "StreamTimeout": 300
+-}
++}
+\ No newline at end of file
+diff --git a/go.mod b/go.mod
+index 4bb64cd..e1b26aa 100644
+--- a/go.mod
++++ b/go.mod
+@@ -13,6 +13,7 @@ require (
+ 	github.com/sirupsen/logrus v1.5.0
+ 	go.etcd.io/bbolt v1.3.4
+ 	golang.org/x/crypto v0.0.0-20200414173820-0848c9571904
++	golang.org/x/net v0.0.0-20190404232315-eb5bcb51f2a3
+ 	golang.org/x/sys v0.0.0-20200413165638-669c56c373c4 // indirect
+ 	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
+ )
+diff --git a/go.sum b/go.sum
+index 7d5b471..8da2968 100644
+--- a/go.sum
++++ b/go.sum
+@@ -30,6 +30,7 @@ go.etcd.io/bbolt v1.3.4/go.mod h1:G5EMThwa9y8QZGBClrRx5EY+Yw9kAhnjy3bSjsnlVTQ=
+ golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
+ golang.org/x/crypto v0.0.0-20200414173820-0848c9571904 h1:bXoxMPcSLOq08zI3/c5dEBT6lE4eh+jOh886GHrn6V8=
+ golang.org/x/crypto v0.0.0-20200414173820-0848c9571904/go.mod h1:LzIPMQfyMNhhGPhUkYOs5KpL4U8rLKemX1yGLhDgUto=
++golang.org/x/net v0.0.0-20190404232315-eb5bcb51f2a3 h1:0GoQqolDA55aaLxZyTzK/Y2ePZzZTUrRacwib7cNsYQ=
+ golang.org/x/net v0.0.0-20190404232315-eb5bcb51f2a3/go.mod h1:t9HGtf8HONx5eT2rtn7q6eTqICYqUVnKs3thJo3Qplg=
+ golang.org/x/sys v0.0.0-20190215142949-d0b11bdaac8a/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
+ golang.org/x/sys v0.0.0-20190412213103-97732733099d/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
+diff --git a/internal/client/state.go b/internal/client/state.go
+index 9a4004f..1f8202a 100644
+--- a/internal/client/state.go
++++ b/internal/client/state.go
+@@ -4,12 +4,13 @@ import (
+ 	"crypto"
+ 	"encoding/json"
+ 	"fmt"
+-	"github.com/cbeuw/Cloak/internal/common"
+ 	"io/ioutil"
+ 	"net"
+ 	"strings"
+ 	"time"
+ 
++	"github.com/cbeuw/Cloak/internal/common"
++
+ 	"github.com/cbeuw/Cloak/internal/ecdh"
+ 	mux "github.com/cbeuw/Cloak/internal/multiplex"
+ )
+@@ -31,6 +32,10 @@ type RawConfig struct {
+ 	RemotePort       string // jsonOptional
+ 
+ 	// defaults set in SplitConfigs
++	// == Start Noctilucent addition ==
++	ESNIServerName string // nullable
++	PreserveSNI    bool   // nullable
++	// == End Noctilucent addition ==
+ 	UDP           bool   // nullable
+ 	BrowserSig    string // nullable
+ 	Transport     string // nullable
+@@ -177,12 +182,23 @@ func (raw *RawConfig) SplitConfigs(worldState common.WorldState) (local LocalCon
+ 	}
+ 	remote.NumConn = raw.NumConn
+ 
++	// Set default ESNI value from servername
++	if raw.ESNIServerName == "" {
++		raw.ESNIServerName = raw.RemoteHost
++		// raw.PreserveSNI = false
++	}
++
+ 	// Transport and (if TLS mode), browser
+ 	switch strings.ToLower(raw.Transport) {
+ 	case "cdn":
+ 		remote.TransportMaker = func() Transport {
+ 			return &WSOverTLS{
+ 				cdnDomainPort: remote.RemoteAddr,
++				// == Start Noctilucent addition ==
++				ESNIServerName: raw.ESNIServerName,
++				PreserveSNI:    raw.PreserveSNI,
++				host:           raw.ServerName,
++				// == End Noctilucent addition ==
+ 			}
+ 		}
+ 	case "direct":
+diff --git a/internal/client/websocket.go b/internal/client/websocket.go
+index 3e4cf05..bd75d16 100644
+--- a/internal/client/websocket.go
++++ b/internal/client/websocket.go
+@@ -1,32 +1,92 @@
+ package client
+ 
+ import (
++	"crypto/tls"
+ 	"encoding/base64"
+ 	"errors"
+ 	"fmt"
+-	"github.com/cbeuw/Cloak/internal/common"
+-	"github.com/gorilla/websocket"
+-	utls "github.com/refraction-networking/utls"
+ 	"net"
+ 	"net/http"
+ 	"net/url"
++
++	"github.com/cbeuw/Cloak/internal/common"
++	"github.com/gorilla/websocket"
++	log "github.com/sirupsen/logrus"
+ )
+ 
+ type WSOverTLS struct {
+ 	*common.WebSocketConn
+-	cdnDomainPort string
++	cdnDomainPort  string
++	host           string
++	ESNIServerName string
++	PreserveSNI    bool
++	esniKeys       string
+ }
+ 
+ func (ws *WSOverTLS) Handshake(rawConn net.Conn, authInfo AuthInfo) (sessionKey [32]byte, err error) {
+-	utlsConfig := &utls.Config{
+-		ServerName:         authInfo.MockDomain,
++	// utlsConfig := &utls.Config{
++	// 	ServerName:         authInfo.MockDomain,
++	// 	InsecureSkipVerify: true,
++	// }
++	// uconn := utls.UClient(rawConn, utlsConfig, utls.HelloChrome_Auto)
++	// err = uconn.Handshake()
++	// if err != nil {
++	// 	return
++	// }
++
++	// == Start Noctilucent addition ==
++	tlsConfig := &tls.Config{
++		MinVersion:         tls.VersionTLS13, // Force 1.3
++		MaxVersion:         tls.VersionTLS13,
+ 		InsecureSkipVerify: true,
++		ServerName:         ws.host,
++		PreserveSNI:        ws.PreserveSNI,
++		ESNIServerName:     ws.ESNIServerName,
+ 	}
+-	uconn := utls.UClient(rawConn, utlsConfig, utls.HelloChrome_Auto)
+-	err = uconn.Handshake()
++
++	var esniKeysBytes []byte
++	// Try to get embedded key bytes from config
++	if len(ws.esniKeys) != 0 {
++		esniKeysBytes, err = base64.StdEncoding.DecodeString(ws.esniKeys)
++		if err != nil {
++			log.Fatalf("[E] Failed to parse esniKeys from config: %s", err)
++		}
++	}
++	// Still no key bytes
++	if len(esniKeysBytes) == 0 {
++		esniKeysBytes, err = QueryESNIKeysForHostDoH("cloudflare.com", true)
++		// Try to query ESNI keys via DoH, then DoT, and finally standard DNS
++		if err != nil {
++			log.Infof("[E] Failed to retrieve ESNI keys for host via DoH: %s", err)
++			esniKeysBytes, err = QueryESNIKeysForHostDoT(ws.host)
++			if err != nil {
++				log.Printf("[E] Failed to retrieve ESNI keys for host via TLS: %s", err)
++				esniTxts, err := net.LookupTXT(ws.host)
++				if err != nil {
++					log.Fatalf("[E] Failed to retrieve ESNI keys for host via standard DNS: %s", err)
++				}
++				if len(esniTxts) != 1 {
++					log.Fatalf("[E] Unexpected number of TXT responses when querying ESNI keys via standard DNS")
++				}
++				esniKeysBytes, err = base64.StdEncoding.DecodeString(esniTxts[0])
++				if err != nil {
++					log.Fatalf("[E] Failed to decode TXT response when querying ESNI keys via standard DNS: %s", err)
++				}
++			}
++		}
++		log.Debugf("[+] Successfully queried _ensi TXT record for host: %s", ws.host)
++	}
++	tlsConfig.ClientESNIKeys, err = tls.ParseESNIKeys(esniKeysBytes)
++	if tlsConfig.ClientESNIKeys == nil {
++		log.Fatalf("[E] Failed to process ESNI keys for host: %s", err)
++	}
++	// == End Noctilucent addition ==
++	log.Debugf("[+] Connecting to https://" + ws.host)
++	con, err := tls.Dial("tcp", ws.cdnDomainPort, tlsConfig)
+ 	if err != nil {
+-		return
++		log.Errorf("[E] handshake failed: %v\n\n", err)
+ 	}
++	log.Debugf("[+] TLS handshake complete")
+ 
+ 	u, err := url.Parse("ws://" + ws.cdnDomainPort)
+ 	if err != nil {
+@@ -36,7 +96,10 @@ func (ws *WSOverTLS) Handshake(rawConn net.Conn, authInfo AuthInfo) (sessionKey
+ 	payload, sharedSecret := makeAuthenticationPayload(authInfo)
+ 	header := http.Header{}
+ 	header.Add("hidden", base64.StdEncoding.EncodeToString(append(payload.randPubKey[:], payload.ciphertextWithTag[:]...)))
+-	c, _, err := websocket.NewClient(uconn, u, header, 16480, 16480)
++	// == Start Noctilucent addition ==
++	header.Add("Host", ws.ESNIServerName)
++	// == End Noctilucent addition ==
++	c, _, err := websocket.NewClient(con, u, header, 16480, 16480)
+ 	if err != nil {
+ 		return sessionKey, fmt.Errorf("failed to handshake: %v", err)
+ 	}
