@@ -1,0 +1,14 @@
+{
+  "Transport": "CDN",
+  "ProxyMethod": "shadowsocks",
+  "EncryptionMethod": "plain",
+  "UID": "base64-UID-here",
+  "PublicKey": "base64-public-key-here",
+  "ServerName": "www.mozilla.com",
+  "NumConn": 4,
+  "StreamTimeout": 300,
+  "RemoteHost": "162.159.133.233",
+  "RemotePort": "443",
+  "ESNIServerName": "cloak-server-domain.tld",
+  "PreserveSNI": true
+}
