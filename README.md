@@ -46,6 +46,95 @@ Noctilucent
 └── websocket # Noctilucent websocket library
 ```
 
+## Use in Go projects
+
+### HTTPS
+
+1. Replace the `crpto/tls` import with `github.com/SixGenInc/Noctilucent/tls`.
+2. Copy `esni_DoH.go` from `client` into your project (or use your own method for getting the keys).
+3. Aquire and parse the ESNI Keys for Cloudflare:
+
+```
+esniKeysBytes, err := QueryESNIKeysForHostDoH("cloudflare.com", true)
+if err != nil {
+	fmt.Println("[E] Failed to retrieve ESNI keys for host via DoH: %s", err)
+}
+esnikeys, err := tls.ParseESNIKeys(esniKeysBytes)
+if err != nil {
+	fmt.Println("[E] Failed to parse ESNI keys: %s", err)
+}
+```
+
+4. Set your `tls.Config` with the new options:
+
+```
+tlsConfig := &tls.Config{
+	InsecureSkipVerify: true,
+	ClientESNIKeys:     esnikeys,
+	MinVersion:         tls.VersionTLS13, // Force TLS 1.3
+	MaxVersion:         tls.VersionTLS13,
+	ESNIServerName:     actualDomain,
+	PreserveSNI:        true,
+	ServerName:         frontDomain
+}
+```
+
+5. Dial using this `tls.Config`
+
+```
+httpClient = &http.Client{
+	Transport: &http.Transport{
+		DialTLS: func(network, addr string) (net.Conn, error) {
+			conn, err = tls.Dial("tcp", host+":"+port, tlsConfig)
+			return conn, err
+		},
+	},
+}
+```
+
+6. Make hidden requests!
+
+```
+r, err := httpClient.Post(("https://" + actualDomain + ":" + port + URL), "application/json", bytes.NewBuffer(someJSON))
+```
+
+### Websockets
+
+Websockets are a bit different depending on which websocket library you are using. 
+
+If you are currently using `golang.org/x/net/websocket`:
+
+1. Replace it with `github.com/SixGenInc/Noctilucent/websocket`.
+2. Aquire ESNI keys, parse, and setup a `tls.Config` like HTTPS.
+3. Setup and Dial with the websocket library as so:
+
+```
+config, _ := websocket.NewConfigWithHost("wss://"+frontDomain+URL, "https://"+frontDomain, ESNIServerName)
+config.TlsConfig = tlsConfig
+ws, err := websocket.DialConfig(config)
+```
+
+4. Send and recieve using `ws` as normal, now hidden!
+
+If you are currently using `github.com/gorilla/websocket`:
+
+1. Aquire ESNI keys, parse, and setup a `tls.Config` like HTTPS.
+2. Dial using the TLS config:
+
+```
+con, err := tls.Dial("tcp", fontDomainAndPort, tlsConfig)
+```
+
+3. Setup and force the `Host` header and use the TLS connection with the new websocket client:
+
+```
+header := http.Header{}
+header.Add("Host", ESNIServerName)
+c, _, err := websocket.NewClient(con, u, header, 16480, 16480)
+```
+
+4. Use the websocket client as normal, now hidden!
+
 ## Build from source
 
 ### Setup - Ubuntu 18.04
