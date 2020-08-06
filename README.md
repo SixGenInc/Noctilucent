@@ -130,6 +130,7 @@ con, err := tls.Dial("tcp", fontDomainAndPort, tlsConfig)
 ```
 header := http.Header{}
 header.Add("Host", ESNIServerName)
+u, _ := url.Parse("ws://" + fontDomainAndPort)
 c, _, err := websocket.NewClient(con, u, header, 16480, 16480)
 ```
 
