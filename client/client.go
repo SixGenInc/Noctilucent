@@ -223,7 +223,7 @@ func main() {
 				}
 			}
 		}
-		fmt.Println("[+] Successfully queried _ensi TXT record for host:", host)
+		fmt.Println("[+] Successfully queried _esni TXT record for host:", host)
 	}
 	if enableEsni {
 		client.TLS.ClientESNIKeys, err = tls.ParseESNIKeys(esniKeysBytes)
@@ -263,7 +263,7 @@ func main() {
 
 	fmt.Printf("[=] TLS %s with %s\n", tlsVersionToName[client.TLS.MinVersion], cipherSuiteIdToName[client.TLS.CipherSuites[0]])
 	if client.TLS.ESNIServerName != "" {
-		fmt.Println("[=] ENSI host set to:", client.TLS.ESNIServerName)
+		fmt.Println("[=] ESNI host set to:", client.TLS.ESNIServerName)
 	} else {
 		fmt.Println("[=] ESNI host has not been set")
 	}
