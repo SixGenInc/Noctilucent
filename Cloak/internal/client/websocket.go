@@ -58,10 +58,10 @@ func (ws *WSOverTLS) Handshake(rawConn net.Conn, authInfo AuthInfo) (sessionKey 
 		// Try to query ESNI keys via DoH, then DoT, and finally standard DNS
 		if err != nil {
 			log.Infof("[E] Failed to retrieve ESNI keys for host via DoH: %s", err)
-			esniKeysBytes, err = QueryESNIKeysForHostDoT(ws.host)
+			esniKeysBytes, err = QueryESNIKeysForHostDoT("cloudflare.com")
 			if err != nil {
 				log.Printf("[E] Failed to retrieve ESNI keys for host via TLS: %s", err)
-				esniTxts, err := net.LookupTXT(ws.host)
+				esniTxts, err := net.LookupTXT("_esni.cloudflare.com")
 				if err != nil {
 					log.Fatalf("[E] Failed to retrieve ESNI keys for host via standard DNS: %s", err)
 				}
@@ -101,8 +101,11 @@ func (ws *WSOverTLS) Handshake(rawConn net.Conn, authInfo AuthInfo) (sessionKey 
 	// == End Noctilucent addition ==
 	c, _, err := websocket.NewClient(con, u, header, 16480, 16480)
 	if err != nil {
+		log.Fatalf("Websocket handshake error. Make sure your UID and PublicKey are correct, and your SSL/TSL encryption mode is 'Flexible' in Cloudflare if your Cloak server is running on port 80. Raw error: %v", err)
 		return sessionKey, fmt.Errorf("failed to handshake: %v", err)
 	}
+
+	log.Debugf("[+] Websocket connection complete")
 
 	ws.WebSocketConn = &common.WebSocketConn{Conn: c}
 

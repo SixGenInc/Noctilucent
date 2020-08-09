@@ -102,24 +102,24 @@ client: $(BUILD_DIR)/$(OS_ARCH)/.ok_$(VER_OS_ARCH)
 	cd $(TOP_DIR)/client && \
 		mkdir -p build && \
 		GOROOT="$(GOROOT_LOCAL)" $(GO) get -d -v && \
-		GOROOT="$(GOROOT_LOCAL)" GOOS=linux CGO_ENABLED=0 $(GO) build -o noctilucent-client-linux -v -i . && \
-		GOROOT="$(GOROOT_LOCAL)" GOOS=darwin CGO_ENABLED=0 $(GO) build -o noctilucent-client-macOS -v -i . && \
-		GOROOT="$(GOROOT_LOCAL)" GOOS=windows CGO_ENABLED=0 $(GO) build -o noctilucent-client-windows.exe -v -i . && \
+		GOROOT="$(GOROOT_LOCAL)" GOOS=linux CGO_ENABLED=0 $(GO) build -trimpath -o noctilucent-client-linux -v -i . && \
+		GOROOT="$(GOROOT_LOCAL)" GOOS=darwin CGO_ENABLED=0 $(GO) build  -trimpath -o noctilucent-client-macOS -v -i . && \
+		GOROOT="$(GOROOT_LOCAL)" GOOS=windows CGO_ENABLED=0 $(GO) build  -trimpath -o noctilucent-client-windows.exe -v -i . && \
 		mv noctilucent-client* ./build
 
 # Builds server
 server: $(BUILD_DIR)/$(OS_ARCH)/.ok_$(VER_OS_ARCH)
 	cd $(TOP_DIR)/server && \
-		GOROOT="$(GOROOT_LOCAL)" GOOS=linux CGO_ENABLED=0 $(GO) build -o noctilucent-test-server-linux -v -i .
+		GOROOT="$(GOROOT_LOCAL)" GOOS=linux CGO_ENABLED=0 $(GO) build -trimpath -o noctilucent-test-server-linux -v -i .
 
 
 # Cloak
 cloak: $(BUILD_DIR)/$(OS_ARCH)/.ok_$(VER_OS_ARCH)
 	cd $(TOP_DIR)/Cloak && \
 		mkdir -p build && \
-		GOROOT="$(GOROOT_LOCAL)" GOOS=linux CGO_ENABLED=0 go build -o noctilucent-cloak-client-linux -ldflags "-X main.version=${version}" ./cmd/ck-client && \
-		GOROOT="$(GOROOT_LOCAL)" GOOS=darwin CGO_ENABLED=0 go build -o noctilucent-cloak-client-macOS -ldflags "-X main.version=${version}" ./cmd/ck-client && \
-		GOROOT="$(GOROOT_LOCAL)" GOOS=windows CGO_ENABLED=0 go build -o noctilucent-cloak-client-windows.exe -ldflags "-X main.version=${version}" ./cmd/ck-client && \
+		GOROOT="$(GOROOT_LOCAL)" GOOS=linux CGO_ENABLED=0 go build -trimpath -o noctilucent-cloak-client-linux -ldflags "-X main.version=${version}" ./cmd/ck-client && \
+		GOROOT="$(GOROOT_LOCAL)" GOOS=darwin CGO_ENABLED=0 go build -trimpath -o noctilucent-cloak-client-macOS -ldflags "-X main.version=${version}" ./cmd/ck-client && \
+		GOROOT="$(GOROOT_LOCAL)" GOOS=windows CGO_ENABLED=0 go build -trimpath -o noctilucent-cloak-client-windows.exe -ldflags "-X main.version=${version}" ./cmd/ck-client && \
 		mv noctilucent-cloak-client* ./build
 
 ##############################

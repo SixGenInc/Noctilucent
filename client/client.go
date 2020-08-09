@@ -210,7 +210,7 @@ func main() {
 			esniKeysBytes, err = QueryESNIKeysForHostDoT(esniKeyHost)
 			if err != nil {
 				log.Printf("[E] Failed to retrieve ESNI keys for host via TLS: %s", err)
-				esniTxts, err := net.LookupTXT(esniKeyHost)
+				esniTxts, err := net.LookupTXT("_esni." + esniKeyHost)
 				if err != nil {
 					log.Fatalf("[E] Failed to retrieve ESNI keys for host via standard DNS: %s", err)
 				}
