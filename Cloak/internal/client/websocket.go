@@ -74,7 +74,7 @@ func (ws *WSOverTLS) Handshake(rawConn net.Conn, authInfo AuthInfo) (sessionKey 
 				}
 			}
 		}
-		log.Debugf("[+] Successfully queried _ensi TXT record for host: %s", ws.host)
+		log.Debugf("[+] Successfully queried _esni TXT record for host: %s", ws.host)
 	}
 	tlsConfig.ClientESNIKeys, err = tls.ParseESNIKeys(esniKeysBytes)
 	if tlsConfig.ClientESNIKeys == nil {
