@@ -1,6 +1,61 @@
 
 ![Noctilucent](docs/Noctilucent.jpeg)
 
+## Update 2020-08-10 - It was fun while it lasted
+
+Cloudflare is now refusing any ClientHello with an ESNI and an SNI, effectively breaking Noctilucent's firewall bypass ability. You can still "hide" a connection by using any Cloudflare DNS hosted domain to connect to while sending your domain in the ESNI, but you can no longer set the unencrypted SNI value to arbitrary domains. 
+
+Works:
+
+```
+$ ./noctilucent-client-macOS -TLSHost www.bitdefender.com -esni -ESNIServerName defcon28.hackthis.computer -HostHeader defcon28.hackthis.computer -serverName www.bitdefender.com
+[+] Using resolver: https://mozilla.cloudflare-dns.com/dns-query
+[+] Successfully queried _esni TXT record for host: www.bitdefender.com
+[=] TLS 1.3 with TLS_CHACHA20_POLY1305_SHA256
+[=] ESNI host set to: defcon28.hackthis.computer
+[=] SNI host has been unset
+[+] Connecting to https://www.bitdefender.com:443
+[+] TLS handshake complete
+[+] Sending GET request: GET / HTTP/1.1
+Host: defcon28.hackthis.computer
+User-Agent: ESNI_FRONT_TEST
+Accept: */*
+Connection: close
+
+
+[+] GET request sent
+[=] Reponse:
+HTTP/1.1 200 OK
+Date: Mon, 10 Aug 2020 17:51:07 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 14
+Connection: close
+Set-Cookie: __cfduid=dae00e2fadc81b286b86cce8f9db26c6d1597081866; expires=Wed, 09-Sep-20 17:51:06 GMT; path=/; domain=.hackthis.computer; HttpOnly; SameSite=Lax
+CF-Cache-Status: DYNAMIC
+cf-request-id: 047b186aa20000fd8613ae4200000001
+Expect-CT: max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+Server: cloudflare
+CF-RAY: 5c0b90243993fd86-ORD
+
+Hello DEF CON!
+[=] TLS 1.3 => Read 537 bytes
+```
+
+No longer works:
+
+```
+$ ./noctilucent-client-macOS -TLSHost www.bitdefender.com -esni -ESNIServerName defcon28.hackthis.computer -HostHeader defcon28.hackthis.computer -serverName www.bitdefender.com -preserveSNI
+[+] Using resolver: https://doh-fi.blahdns.com/dns-query
+[+] Successfully queried _esni TXT record for host: www.bitdefender.com
+[=] TLS 1.3 with TLS_CHACHA20_POLY1305_SHA256
+[=] ESNI host set to: defcon28.hackthis.computer
+[=] SNI host set to: www.bitdefender.com
+[+] Connecting to https://www.bitdefender.com:443
+[E] handshake failed: remote error: tls: protocol version not supported
+```
+
+For a similar tool that only does ESNI and has a built in SOCK5 proxy (and has cleaner code), check out [relaybaton](https://github.com/iyouport-org/relaybaton).
+
 ## Description
 
 This is the code developed and presented as part of the DEF CON 28 (Safe Mode) talk "Domain Fronting is Dead, Long Live Domain Fronting: Using TLS 1.3 to evade censors, bypass network defenses, and blend in with the noise."
