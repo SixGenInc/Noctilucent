@@ -68,27 +68,6 @@ index 1df5b86..6d329b5 100644
 +  "PreserveSNI": true
 +}
 \ No newline at end of file
-diff --git a/example_config/ckserver.json b/example_config/ckserver.json
-index 5b8eb8c..b8b89d0 100644
---- a/example_config/ckserver.json
-+++ b/example_config/ckserver.json
-@@ -18,11 +18,11 @@
-     ":80"
-   ],
-   "BypassUID": [
--    "1rmq6Ag1jZJCImLBIL5wzQ=="
-+    "base64-bypass-UID"
-   ],
-   "RedirAddr": "204.79.197.200",
--  "PrivateKey": "EN5aPEpNBO+vw+BtFQY2OnK9bQU7rvEj5qmnmgwEtUc=",
--  "AdminUID": "5nneblJy6lniPJfr81LuYQ==",
-+  "PrivateKey": "base64-private-key",
-+  "AdminUID": "base64-admin-UID",
-   "DatabasePath": "userinfo.db",
-   "StreamTimeout": 300
--}
-+}
-\ No newline at end of file
 diff --git a/go.mod b/go.mod
 index 4bb64cd..e1b26aa 100644
 --- a/go.mod
